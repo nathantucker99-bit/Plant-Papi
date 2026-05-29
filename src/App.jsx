@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
 import AppShell from './components/AppShell'
 import Button from './components/Button'
 import Camera from './pages/Camera'
+import Identify from './pages/Identify'
 
 function Home() {
   const navigate = useNavigate()
@@ -21,6 +22,11 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/camera" element={<Camera />} />
+        <Route path="/identify" element={
+          <AppShell>
+            <Identify />
+          </AppShell>
+        } />
         <Route path="/*" element={
           <AppShell>
             <Routes>
