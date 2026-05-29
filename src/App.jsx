@@ -1,29 +1,17 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
 import AppShell from './components/AppShell'
 import Button from './components/Button'
-import Card from './components/Card'
-import Badge from './components/Badge'
-import Spinner from './components/Spinner'
+import Camera from './pages/Camera'
 
 function Home() {
+  const navigate = useNavigate()
   return (
-    <div style={{ padding: 'var(--space-5)', display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
-      <h1 style={{ fontSize: '22px', color: 'var(--text-primary)' }}>PlantPal</h1>
-
-      <Card>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: 'var(--space-3)' }}>Monstera deliciosa</p>
-        <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
-          <Badge status="ok" label="Watered" />
-          <Badge status="due" label="Due today" />
-          <Badge status="overdue" label="Overdue" />
-        </div>
-      </Card>
-
-      <Button variant="primary" full>Identify a plant</Button>
-      <Button variant="secondary" full>My plants</Button>
-      <Button variant="ghost">Cancel</Button>
-
-      <Spinner />
+    <div style={{ padding: 'var(--space-5)', display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', paddingTop: 'calc(env(safe-area-inset-top) + var(--space-5))' }}>
+      <h1 style={{ fontSize: '26px', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.5px' }}>PlantPal</h1>
+      <p style={{ color: 'var(--text-secondary)', fontSize: '15px' }}>Identify and care for your plants.</p>
+      <Button variant="primary" full onClick={() => navigate('/camera')}>
+        📷 Identify a Plant
+      </Button>
     </div>
   )
 }
@@ -31,11 +19,16 @@ function Home() {
 function App() {
   return (
     <BrowserRouter>
-      <AppShell>
-        <Routes>
-          <Route path="/" element={<Home />} />
-        </Routes>
-      </AppShell>
+      <Routes>
+        <Route path="/camera" element={<Camera />} />
+        <Route path="/*" element={
+          <AppShell>
+            <Routes>
+              <Route path="/" element={<Home />} />
+            </Routes>
+          </AppShell>
+        } />
+      </Routes>
     </BrowserRouter>
   )
 }
