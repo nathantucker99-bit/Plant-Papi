@@ -1,0 +1,121 @@
+.hero {
+  width: calc(100% + var(--space-4) * 2);
+  margin: 0 calc(-1 * var(--space-4)) var(--space-4);
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+.heroPlaceholder {
+  width: calc(100% + var(--space-4) * 2);
+  margin: 0 calc(-1 * var(--space-4)) var(--space-4);
+  height: 140px;
+  background: var(--bg-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 52px;
+}
+
+.sciName {
+  font-size: 20px;
+  font-weight: 800;
+  font-style: italic;
+  color: var(--text-primary);
+  letter-spacing: -0.3px;
+  margin-bottom: var(--space-1);
+}
+
+.commonName {
+  font-size: 15px;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-4);
+}
+
+/* confidence meter */
+.confRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.confTrack {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.08);
+  overflow: hidden;
+}
+
+.confFill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.confFill.high   { background: linear-gradient(to right, var(--green-mid), var(--green-light)); }
+.confFill.medium { background: linear-gradient(to right, #a07830, var(--status-due)); }
+.confFill.low    { background: linear-gradient(to right, #884030, var(--status-overdue)); }
+
+.confPct {
+  font-size: 13px;
+  font-weight: 700;
+  min-width: 36px;
+  text-align: right;
+}
+
+.confPct.high   { color: var(--status-ok); }
+.confPct.medium { color: var(--status-due); }
+.confPct.low    { color: var(--status-overdue); }
+
+/* info rows */
+.section {
+  margin-bottom: var(--space-4);
+}
+
+.sectionTitle {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: var(--space-2);
+}
+
+.pill {
+  display: inline-flex;
+  background: var(--bg-surface);
+  border: 1px solid rgba(74, 138, 90, 0.2);
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 0 var(--space-1) var(--space-1) 0;
+}
+
+.infoRow {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  font-size: 14px;
+}
+
+.infoLabel { color: var(--text-muted); }
+.infoValue { color: var(--text-primary); font-weight: 500; text-align: right; }
+
+.gbifLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--mist);
+  font-size: 13px;
+  padding: var(--space-3) 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.addBtn {
+  margin-top: var(--space-4);
+}

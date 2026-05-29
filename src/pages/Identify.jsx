@@ -4,7 +4,15 @@ import { identifyPlant } from '../utils/plantnet'
 import Spinner from '../components/Spinner'
 import Card from '../components/Card'
 import Button from '../components/Button'
+import BottomSheet from '../components/BottomSheet'
+import SpeciesDetail from './SpeciesDetail'
 import styles from './Identify.module.css'
+
+function confLevel(score) {
+  if (score >= 0.7) return 'high'
+  if (score >= 0.35) return 'medium'
+  return 'low'
+}
 
 export default function Identify() {
   const navigate = useNavigate()
@@ -12,24 +20,19 @@ export default function Identify() {
 
   const [results, setResults] = useState(null)
   const [error, setError] = useState(null)
+  const [selected, setSelected] = useState(null)
+  const [visible, setVisible] = useState(false)
 
   useEffect(() => {
     if (!image) { navigate('/camera', { replace: true }); return }
-
     identifyPlant(image)
-      .then(setResults)
+      .then(data => { setResults(data); setTimeout(() => setVisible(true), 50) })
       .catch(err => setError(err.message === 'no_match' ? 'no_match' : 'api_error'))
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   function handleRetry() {
     sessionStorage.removeItem('capturedImage')
     navigate('/camera')
-  }
-
-  function handleAddPlant(result) {
-    // pass chosen identification to the save-plant flow (Task 8)
-    sessionStorage.setItem('identifiedPlant', JSON.stringify(result))
-    navigate('/plant/new')
   }
 
   return (
@@ -76,45 +79,60 @@ export default function Identify() {
         <div className={styles.results}>
           <p className={styles.sectionLabel}>Best matches</p>
 
-          {results.map((r, i) => (
-            <Card key={r.scientificName} pressable={i === 0} className={i === 0 ? styles.top : ''}>
-              <div className={styles.resultCard}>
-                {r.imageUrl
-                  ? <img src={r.imageUrl} className={styles.resultThumb} alt={r.scientificName} />
-                  : <div className={styles.resultThumbPlaceholder}>🌿</div>
-                }
-                <div className={styles.resultInfo}>
-                  <p className={styles.scientificName}>{r.scientificName}</p>
-                  {r.commonNames[0] && (
-                    <p className={styles.commonName}>{r.commonNames[0]}</p>
-                  )}
-                  {r.family && (
-                    <p className={styles.family}>{r.family}</p>
-                  )}
-                  <div className={styles.confBar}>
-                    <div
-                      className={styles.confFill}
-                      style={{ width: `${Math.round(r.score * 100)}%` }}
-                    />
+          {results.map((r, i) => {
+            const pct = Math.round(r.score * 100)
+            const level = confLevel(r.score)
+            return (
+              <div
+                key={r.scientificName}
+                className={`${styles.cardWrap} ${visible ? styles.entered : ''}`}
+                style={{ transitionDelay: `${i * 70}ms` }}
+              >
+                <Card pressable onClick={() => setSelected(r)} className={i === 0 ? styles.topCard : ''}>
+                  <div className={styles.resultCard}>
+                    {r.imageUrl
+                      ? <img src={r.imageUrl} className={styles.resultThumb} alt={r.scientificName} />
+                      : <div className={styles.resultThumbPlaceholder}>🌿</div>
+                    }
+                    <div className={styles.resultInfo}>
+                      <p className={styles.scientificName}>{r.scientificName}</p>
+                      {r.commonNames[0] && (
+                        <p className={styles.commonName}>{r.commonNames[0]}</p>
+                      )}
+                      {r.family && <p className={styles.family}>{r.family}</p>}
+                      <div className={styles.confBar}>
+                        <div
+                          className={`${styles.confFill} ${styles[level]}`}
+                          style={{ width: `${pct}%` }}
+                        />
+                      </div>
+                      <p className={`${styles.confLabel} ${styles[level]}`}>{pct}% match</p>
+                    </div>
                   </div>
-                  <p className={styles.confLabel}>{Math.round(r.score * 100)}% confidence</p>
-                </div>
-              </div>
 
-              {i === 0 && (
-                <div className={styles.addRow}>
-                  <Button variant="primary" full onClick={() => handleAddPlant(r)}>
-                    Add to My Plants
-                  </Button>
-                </div>
-              )}
-            </Card>
-          ))}
+                  {i === 0 && (
+                    <div className={styles.addRow}>
+                      <Button variant="primary" full onClick={e => { e.stopPropagation(); setSelected(r) }}>
+                        View &amp; Add →
+                      </Button>
+                    </div>
+                  )}
+                </Card>
+              </div>
+            )
+          })}
 
           <Button variant="ghost" full onClick={handleRetry}>
             Try a different photo
           </Button>
         </div>
+      )}
+
+      {/* species detail sheet */}
+      {selected && (
+        <BottomSheet onClose={() => setSelected(null)}>
+          <SpeciesDetail result={selected} onClose={() => setSelected(null)} />
+        </BottomSheet>
       )}
     </div>
   )

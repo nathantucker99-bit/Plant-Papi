@@ -183,19 +183,42 @@
 .confFill {
   height: 100%;
   border-radius: 2px;
-  background: linear-gradient(to right, var(--green-mid), var(--green-light));
-  transition: width 0.6s ease;
+  transition: width 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+.confFill.high   { background: linear-gradient(to right, var(--green-mid), var(--green-light)); }
+.confFill.medium { background: linear-gradient(to right, #a07830, var(--status-due)); }
+.confFill.low    { background: linear-gradient(to right, #884030, var(--status-overdue)); }
 
 .confLabel {
   font-size: 11px;
-  color: var(--text-muted);
   margin-top: 4px;
 }
+
+.confLabel.high   { color: var(--status-ok); }
+.confLabel.medium { color: var(--status-due); }
+.confLabel.low    { color: var(--status-overdue); }
 
 /* ── add button ─────────────────────────────────────────────── */
 .addRow {
   margin-top: var(--space-2);
   display: flex;
   gap: var(--space-2);
+}
+
+/* top result highlight */
+.topCard {
+  border-color: rgba(122, 184, 120, 0.35) !important;
+}
+
+/* ── staggered entrance animation ───────────────────────────── */
+.cardWrap {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cardWrap.entered {
+  opacity: 1;
+  transform: translateY(0);
 }
