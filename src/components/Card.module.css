@@ -1,0 +1,20 @@
+.card {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(74, 138, 90, 0.15);
+  overflow: hidden;
+}
+
+.padded {
+  padding: var(--space-4);
+}
+
+.pressable {
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.pressable:active {
+  transform: scale(0.985);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}

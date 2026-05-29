@@ -1,0 +1,25 @@
+.wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+}
+
+.ring {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 3px solid rgba(122, 184, 120, 0.15);
+  border-top-color: var(--green-light);
+  animation: spin 0.7s linear infinite;
+}
+
+.sm .ring {
+  width: 20px;
+  height: 20px;
+  border-width: 2px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
