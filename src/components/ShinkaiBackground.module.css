@@ -1,0 +1,153 @@
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: linear-gradient(
+    175deg,
+    #0a1a0e 0%,
+    #0f1f14 25%,
+    #121e15 50%,
+    #0d1a10 75%,
+    #081209 100%
+  );
+}
+
+/* ── depth layers ───────────────────────────────────────────── */
+.layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* far canopy — top gradient wash */
+.canopy {
+  background: radial-gradient(
+      ellipse 120% 60% at 30% -10%,
+      rgba(42, 80, 50, 0.55) 0%,
+      transparent 65%
+    ),
+    radial-gradient(
+      ellipse 80% 40% at 75% -5%,
+      rgba(26, 46, 30, 0.45) 0%,
+      transparent 60%
+    );
+}
+
+/* mid ground silhouette */
+.midground {
+  bottom: 0;
+  top: auto;
+  height: 55%;
+  background: linear-gradient(
+    to top,
+    #060e07 0%,
+    #0b1a0d 30%,
+    transparent 100%
+  );
+}
+
+/* atmospheric depth haze */
+.haze {
+  background: radial-gradient(
+      ellipse 100% 35% at 50% 45%,
+      rgba(122, 170, 192, 0.06) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 60% 25% at 20% 55%,
+      rgba(74, 138, 90, 0.05) 0%,
+      transparent 60%
+    );
+}
+
+/* ── light beams ────────────────────────────────────────────── */
+.beams {
+  opacity: 0.6;
+}
+
+.beam {
+  position: absolute;
+  top: -10%;
+  width: 1px;
+  height: 80%;
+  background: linear-gradient(
+    to bottom,
+    rgba(200, 221, 232, 0.18) 0%,
+    rgba(122, 170, 192, 0.08) 50%,
+    transparent 100%
+  );
+  transform-origin: top center;
+  filter: blur(3px);
+  animation: swayBeam var(--dur) ease-in-out infinite alternate;
+}
+
+.beam:nth-child(1) { left: 18%; width: 2px; --dur: 9s; animation-delay: 0s; transform: rotate(-4deg); opacity: 0.7; }
+.beam:nth-child(2) { left: 32%; width: 1px; --dur: 13s; animation-delay: -3s; transform: rotate(2deg); opacity: 0.4; }
+.beam:nth-child(3) { left: 55%; width: 3px; --dur: 11s; animation-delay: -6s; transform: rotate(-2deg); opacity: 0.5; }
+.beam:nth-child(4) { left: 70%; width: 1px; --dur: 15s; animation-delay: -2s; transform: rotate(5deg); opacity: 0.3; }
+.beam:nth-child(5) { left: 85%; width: 2px; --dur: 10s; animation-delay: -8s; transform: rotate(-3deg); opacity: 0.45; }
+
+@keyframes swayBeam {
+  from { transform: rotate(var(--rot, -3deg)) scaleY(0.95); opacity: var(--op, 0.5); }
+  to   { transform: rotate(calc(var(--rot, -3deg) + 3deg)) scaleY(1.05); opacity: calc(var(--op, 0.5) * 0.6); }
+}
+
+/* ── mist particles ─────────────────────────────────────────── */
+.mist {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(28px);
+  animation: driftMist var(--dur) ease-in-out infinite alternate;
+  will-change: transform, opacity;
+}
+
+.mist:nth-child(1)  { width: 280px; height: 90px;  left: -8%;  top: 38%; background: rgba(122, 170, 192, 0.07); --dur: 18s; animation-delay: 0s; }
+.mist:nth-child(2)  { width: 380px; height: 70px;  left: 30%;  top: 52%; background: rgba(180, 216, 208, 0.05); --dur: 22s; animation-delay: -5s; }
+.mist:nth-child(3)  { width: 220px; height: 60px;  left: 65%;  top: 42%; background: rgba(122, 170, 192, 0.06); --dur: 16s; animation-delay: -9s; }
+.mist:nth-child(4)  { width: 340px; height: 80px;  left: -5%;  top: 65%; background: rgba(74, 138, 90, 0.04);   --dur: 25s; animation-delay: -3s; }
+.mist:nth-child(5)  { width: 260px; height: 55px;  left: 55%;  top: 70%; background: rgba(184, 216, 176, 0.04); --dur: 20s; animation-delay: -12s; }
+
+@keyframes driftMist {
+  from { transform: translateX(0px) translateY(0px); opacity: 0.6; }
+  to   { transform: translateX(30px) translateY(-12px); opacity: 1; }
+}
+
+/* ── bokeh particles ────────────────────────────────────────── */
+.bokeh {
+  position: absolute;
+  border-radius: 50%;
+  animation: floatBokeh var(--dur) ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.bokeh:nth-child(1)  { width: 6px;  height: 6px;  left: 12%; top: 20%; background: rgba(184, 216, 176, 0.5); filter: blur(1px); --dur: 8s;  animation-delay: 0s; }
+.bokeh:nth-child(2)  { width: 4px;  height: 4px;  left: 28%; top: 35%; background: rgba(122, 170, 192, 0.4); filter: blur(1px); --dur: 11s; animation-delay: -2s; }
+.bokeh:nth-child(3)  { width: 8px;  height: 8px;  left: 45%; top: 15%; background: rgba(212, 237, 208, 0.35); filter: blur(2px); --dur: 14s; animation-delay: -5s; }
+.bokeh:nth-child(4)  { width: 5px;  height: 5px;  left: 62%; top: 28%; background: rgba(184, 216, 176, 0.45); filter: blur(1px); --dur: 9s;  animation-delay: -7s; }
+.bokeh:nth-child(5)  { width: 3px;  height: 3px;  left: 78%; top: 18%; background: rgba(200, 221, 232, 0.5);  filter: blur(0px); --dur: 12s; animation-delay: -1s; }
+.bokeh:nth-child(6)  { width: 7px;  height: 7px;  left: 88%; top: 40%; background: rgba(122, 184, 120, 0.3);  filter: blur(2px); --dur: 16s; animation-delay: -4s; }
+.bokeh:nth-child(7)  { width: 4px;  height: 4px;  left: 35%; top: 55%; background: rgba(212, 237, 208, 0.3);  filter: blur(1px); --dur: 10s; animation-delay: -8s; }
+.bokeh:nth-child(8)  { width: 5px;  height: 5px;  left: 55%; top: 62%; background: rgba(122, 170, 192, 0.35); filter: blur(1px); --dur: 13s; animation-delay: -3s; }
+
+@keyframes floatBokeh {
+  0%   { transform: translateY(0px) translateX(0px); opacity: 0.2; }
+  40%  { opacity: 1; }
+  100% { transform: translateY(-40px) translateX(8px); opacity: 0; }
+}
+
+/* ── foreground vignette ────────────────────────────────────── */
+.vignette {
+  background: radial-gradient(
+    ellipse 100% 100% at 50% 50%,
+    transparent 55%,
+    rgba(6, 12, 7, 0.55) 100%
+  );
+}
+
+/* ── content slot ───────────────────────────────────────────── */
+.children {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+}
