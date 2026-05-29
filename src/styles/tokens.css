@@ -1,0 +1,45 @@
+:root {
+  /* Backgrounds */
+  --bg-deep: #0f1f14;
+  --bg-mid: #1a2e1e;
+  --bg-surface: #243328;
+  --bg-card: #1e2b22;
+
+  /* Greens */
+  --green-dark: #2d5a3a;
+  --green-mid: #4a8a5a;
+  --green-light: #7ab878;
+  --green-pale: #b8d8b0;
+  --green-mist: #d4edd0;
+
+  /* Mist / sky */
+  --mist: #7aaac0;
+  --sky: #c8dde8;
+
+  /* Text */
+  --text-primary: #e8f0e4;
+  --text-secondary: #a8c0a4;
+  --text-muted: #6a8a6a;
+
+  /* Status */
+  --status-ok: #7ab878;
+  --status-due: #d4a840;
+  --status-overdue: #c86848;
+
+  /* Typography */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-size-base: 16px;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+}
