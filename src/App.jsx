@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
+import { HashRouter as BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import AppShell from './components/AppShell'
 import Button from './components/Button'
