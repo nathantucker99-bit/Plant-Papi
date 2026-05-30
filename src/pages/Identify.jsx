@@ -27,7 +27,13 @@ export default function Identify() {
     if (!image) { navigate('/camera', { replace: true }); return }
     identifyPlant(image)
       .then(data => { setResults(data); setTimeout(() => setVisible(true), 50) })
-      .catch(err => setError(err.message === 'no_match' ? 'no_match' : 'api_error'))
+      .catch(err => {
+        const m = err.message
+        if (m === 'no_match') setError('no_match')
+        else if (m === 'no_key') setError('no_key')
+        else if (m === 'bad_key') setError('bad_key')
+        else setError('api_error')
+      })
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   function handleRetry() {
@@ -66,9 +72,10 @@ export default function Identify() {
         <div className={styles.errorWrap}>
           <div className={styles.errorIcon}>{error === 'no_match' ? '🔍' : '⚠️'}</div>
           <p className={styles.errorMsg}>
-            {error === 'no_match'
-              ? "We couldn't identify this plant. Try a clearer photo of the leaves or flowers."
-              : 'Something went wrong. Check your connection and try again.'}
+            {error === 'no_match' && "We couldn't identify this plant. Try a clearer photo of the leaves or flowers."}
+            {error === 'no_key' && "Pl@ntNet API key is not configured. Add VITE_PLANTNET_API_KEY to GitHub Secrets and redeploy."}
+            {error === 'bad_key' && "Pl@ntNet API key is invalid. Check the key in your GitHub Secrets."}
+            {error === 'api_error' && 'Something went wrong. Check your connection and try again.'}
           </p>
           <Button variant="primary" onClick={handleRetry}>Try Again</Button>
         </div>

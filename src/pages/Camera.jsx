@@ -48,10 +48,15 @@ export default function Camera() {
     if (!videoRef.current || !ready) return
     const video = videoRef.current
     const canvas = canvasRef.current
-    canvas.width = video.videoWidth
-    canvas.height = video.videoHeight
-    canvas.getContext('2d').drawImage(video, 0, 0)
-    const dataUrl = canvas.toDataURL('image/jpeg', 0.92)
+
+    // cap at 1200px wide to keep sessionStorage under ~500KB
+    const MAX = 1200
+    const scale = Math.min(1, MAX / video.videoWidth)
+    canvas.width = Math.round(video.videoWidth * scale)
+    canvas.height = Math.round(video.videoHeight * scale)
+    canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height)
+
+    const dataUrl = canvas.toDataURL('image/jpeg', 0.82)
     setFlash(true)
     setTimeout(() => setFlash(false), 300)
     streamRef.current?.getTracks().forEach(t => t.stop())
@@ -84,7 +89,11 @@ export default function Camera() {
   }
 
   function handleIdentify() {
-    sessionStorage.setItem('capturedImage', captured)
+    try {
+      sessionStorage.setItem('capturedImage', captured)
+    } catch {
+      // storage full — still proceed, Identify will handle missing image gracefully
+    }
     navigate('/identify')
   }
 

@@ -11,7 +11,7 @@ function dataUrlToBlob(dataUrl) {
 
 export async function identifyPlant(imageDataUrl) {
   const apiKey = import.meta.env.VITE_PLANTNET_API_KEY
-  if (!apiKey) throw new Error('VITE_PLANTNET_API_KEY is not set')
+  if (!apiKey) throw new Error('no_key')
 
   const blob = dataUrlToBlob(imageDataUrl)
   const form = new FormData()
@@ -24,6 +24,7 @@ export async function identifyPlant(imageDataUrl) {
   })
 
   if (res.status === 404) throw new Error('no_match')
+  if (res.status === 401) throw new Error('bad_key')
   if (!res.ok) {
     const msg = await res.text().catch(() => res.statusText)
     throw new Error(msg)
